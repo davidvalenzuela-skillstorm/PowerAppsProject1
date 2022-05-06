@@ -43,6 +43,72 @@ namespace Control_Tower.Controllers
             return flight;
         }
 
+        // GET: api/Flights/DepartureBetween?date1=[date1]&&date2=[date2]
+        [HttpGet("DepartureBetween")]
+        public async Task<ActionResult<IEnumerable<Flight>>> GetFlightsDepartingBetweenDateTime([FromQuery] DateTime date1, [FromQuery] DateTime date2)
+        {
+            var flights = await _context.Flights
+                .Where(f => f.DepartureDateTime >= date1 && f.DepartureDateTime <= date2)
+                .ToListAsync();
+
+            return flights;
+        }
+
+        // GET: api/Flights/ArrivalBetween?date1=[date1]&&date2=[date2]
+        [HttpGet("ArrivalBetween")]
+        public async Task<ActionResult<IEnumerable<Flight>>> GetFlightsArrivingBetweenDateTime([FromQuery] DateTime date1, [FromQuery] DateTime date2)
+        {
+            var flights = await _context.Flights
+                .Where(f => f.ArrivalDateTime >= date1 && f.ArrivalDateTime <= date2)
+                .ToListAsync();
+
+            return flights;
+        }
+
+        // GET: api/Flights/DepartureAirport?airport=[airport]
+        [HttpGet("DepartureAirport/{airport}")]
+        public async Task<ActionResult<IEnumerable<Flight>>> GetFlightsDepartingFromAirport(string airport)
+        {
+            var flights = await _context.Flights
+                .Where(f => f.DepartureAirport == airport)
+                .ToListAsync();
+
+            return flights;
+        }
+
+        // GET: api/Flights/ArrivalAirport?airport=[airport]
+        [HttpGet("ArrivalAirport/{airport}")]
+        public async Task<ActionResult<IEnumerable<Flight>>> GetFlightsArrivingToAirport(string airport)
+        {
+            var flights = await _context.Flights
+                .Where(f => f.ArrivalAirport == airport)
+                .ToListAsync();
+
+            return flights;
+        }
+
+        // GET: api/Flights/RelatedPassengers?id=[id]
+        [HttpGet("RelatedPassengers")]
+        public async Task<ActionResult<IEnumerable<Passenger>>> GetRelatedPassengers(int id)
+        {
+            var passengers = await _context.Passengers
+                .Where(p => p.FlightID == id)
+                .ToListAsync();
+
+            return passengers;
+        }
+
+        // GET: api/Flights/PassengerLimitBetween?limit1=[limit1]&&limit2=[limit2]
+        [HttpGet("PassengerLimitBetween")]
+        public async Task<ActionResult<IEnumerable<Flight>>> GetFlightsWithPassengerLimitBetween([FromQuery] int limit1, [FromQuery] int limit2)
+        {
+            var flights = await _context.Flights
+                .Where(f => f.PassengerLimit >= limit1 && f.PassengerLimit <= limit2)
+                .ToListAsync();
+
+            return flights;
+        }
+
         // PUT: api/Flights/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
