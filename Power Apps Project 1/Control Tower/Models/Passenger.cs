@@ -8,7 +8,5 @@
         public string Email { get; set; } = String.Empty;
         public int Age { get; set; }
         public int FlightID { get; set; }
-
-        public ICollection<Flight> Flight { get; set; } = null!;
     }
 }

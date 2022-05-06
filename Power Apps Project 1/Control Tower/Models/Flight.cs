@@ -8,7 +8,5 @@
         public string DepartureAirport { get; set; } = String.Empty;
         public string ArrivalAirport { get; set; } = String.Empty;
         public int PassengerLimit { get; set; }
-
-        public ICollection<Passenger> Passenger { get; set; } = null!;
     }
 }
