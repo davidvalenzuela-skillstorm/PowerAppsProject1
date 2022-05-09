@@ -1,13 +1,8 @@
 ﻿#nullable disable
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Control_Tower.Data;
 using Control_Tower.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Control_Tower.Controllers
 {
@@ -41,6 +36,74 @@ namespace Control_Tower.Controllers
             }
 
             return passenger;
+        }
+
+        // Get: api/Passengers/Name?name=[name]
+        [HttpGet("Name")]
+        public async Task<ActionResult<IEnumerable<Passenger>>> GetPassengersByName([FromQuery] string name)
+        {
+            var passengers = await _context.Passengers
+                //.Where(p => p.Name == name) // Better to use "Conatins()" for ease of use
+                .Where(p => p.Name.Contains(name))
+                .ToListAsync();
+
+            return passengers;
+        }
+
+        // Get: api/Passengers/Job?job=[job]
+        [HttpGet("Job")]
+        public async Task<ActionResult<IEnumerable<Passenger>>> GetPassengersByJob([FromQuery] string job)
+        {
+            var passengers = await _context.Passengers
+                .Where(p => p.Job.Contains(job))
+                .ToListAsync();
+
+            return passengers;
+        }
+
+        // Get: api/Passengers/Jobless
+        [HttpGet("Jobless")]
+        public async Task<ActionResult<IEnumerable<Passenger>>> GetPassengersWithoutJob()
+        {
+            var passengers = await _context.Passengers
+                .Where(p => p.Job == null || p.Job == "")
+                .ToListAsync();
+
+            return passengers;
+        }
+
+        // Get: api/Passengers/Email?email=[email]
+        [HttpGet("Email")]
+        public async Task<ActionResult<IEnumerable<Passenger>>> GetPassengersByEmail([FromQuery] string email)
+        {
+            var passengers = await _context.Passengers
+                .Where(p => p.Email.Contains(email))
+                .ToListAsync();
+
+            return passengers;
+        }
+
+        // Get: api/Passengers/AgeBetween?age1=[age1]&&age2=[age2]
+        [HttpGet("AgeBetween")]
+        public async Task<ActionResult<IEnumerable<Passenger>>> GetPassengersWithAgeBetween([FromQuery] int age1, [FromQuery] int age2)
+        {
+            var passengers = await _context.Passengers
+                .Where(p => p.Age >= age1 && p.Age <= age2)
+                .ToListAsync();
+
+            return passengers;
+        }
+
+        // Get: api/Passengers/BookingNumber/[bookingNumber]
+        [HttpGet("BookingNumber/{bookingNumber}")]
+        public async Task<ActionResult<IEnumerable<Passenger>>> GetPassengersByBookingNumber(int bookingNumber)
+        {
+            var passengers = await _context.Passengers
+                .Where(p =>
+                    bookingNumber == -1 ? p.FlightID == null || p.FlightID == 0 : p.FlightID == bookingNumber)
+                .ToListAsync();
+
+            return passengers;
         }
 
         // PUT: api/Passengers/5
