@@ -70,7 +70,7 @@ namespace Control_Tower.Controllers
         public async Task<ActionResult<IEnumerable<Flight>>> GetFlightsDepartingFromAirport(string airport)
         {
             var flights = await _context.Flights
-                .Where(f => f.DepartureAirport == airport)
+                .Where(f => f.DepartureAirport.Contains(airport))
                 .ToListAsync();
 
             return flights;
@@ -81,7 +81,7 @@ namespace Control_Tower.Controllers
         public async Task<ActionResult<IEnumerable<Flight>>> GetFlightsArrivingToAirport(string airport)
         {
             var flights = await _context.Flights
-                .Where(f => f.ArrivalAirport == airport)
+                .Where(f => f.ArrivalAirport.Contains(airport))
                 .ToListAsync();
 
             return flights;
