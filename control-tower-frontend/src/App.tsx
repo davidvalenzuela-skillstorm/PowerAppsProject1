@@ -1,26 +1,62 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import FlightsView from './components/views/flights_view';
+import MainView from './components/views/main_view';
+import PassengersView from './components/views/passengers_view';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+enum Views
+{
+   MainView = 0,
+   FlightsView = 1,
+   PassengersView = 2
+};
+
+type AppState =
+{
+  currentView: Views
+}
+
+class App extends React.Component<any, AppState>
+{
+  constructor(props: any)
+  {
+    super(props);
+    this.state =
+    {
+      currentView: Views.MainView,
+    };
+    this.changeView = this.changeView.bind(this);
+  }
+
+  changeView(newView : Views) : void
+  {
+    this.setState({currentView: newView});
+  }
+
+  render ()
+  {
+    // Render the current view selected
+    let view;
+    switch (this.state.currentView)
+    {
+      default:
+      case Views.MainView:
+        view = <MainView changeView={this.changeView} />;
+        break;
+      case Views.FlightsView:
+        view = <FlightsView changeView={this.changeView} />;
+        break;
+      case Views.PassengersView:
+        view = <PassengersView changeView={this.changeView} />;
+        break;
+    }
+
+    return (
+      <div className="App">
+        {view}
+      </div>
+    );
+  }
 }
 
 export default App;
