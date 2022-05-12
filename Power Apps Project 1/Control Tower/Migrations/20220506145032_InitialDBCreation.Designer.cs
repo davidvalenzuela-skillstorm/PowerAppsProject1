@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Control_Tower.Migrations
 {
     [DbContext(typeof(CTContext))]
-    [Migration("20220505210919_InitialDBCreation")]
+    [Migration("20220506145032_InitialDBCreation")]
     partial class InitialDBCreation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -83,36 +83,6 @@ namespace Control_Tower.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Passengers");
-                });
-
-            modelBuilder.Entity("FlightPassenger", b =>
-                {
-                    b.Property<int>("FlightID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PassengerID")
-                        .HasColumnType("int");
-
-                    b.HasKey("FlightID", "PassengerID");
-
-                    b.HasIndex("PassengerID");
-
-                    b.ToTable("FlightPassenger");
-                });
-
-            modelBuilder.Entity("FlightPassenger", b =>
-                {
-                    b.HasOne("Control_Tower.Models.Flight", null)
-                        .WithMany()
-                        .HasForeignKey("FlightID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Control_Tower.Models.Passenger", null)
-                        .WithMany()
-                        .HasForeignKey("PassengerID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

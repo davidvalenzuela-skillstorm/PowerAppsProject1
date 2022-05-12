@@ -82,36 +82,6 @@ namespace Control_Tower.Migrations
 
                     b.ToTable("Passengers");
                 });
-
-            modelBuilder.Entity("FlightPassenger", b =>
-                {
-                    b.Property<int>("FlightID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PassengerID")
-                        .HasColumnType("int");
-
-                    b.HasKey("FlightID", "PassengerID");
-
-                    b.HasIndex("PassengerID");
-
-                    b.ToTable("FlightPassenger");
-                });
-
-            modelBuilder.Entity("FlightPassenger", b =>
-                {
-                    b.HasOne("Control_Tower.Models.Flight", null)
-                        .WithMany()
-                        .HasForeignKey("FlightID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Control_Tower.Models.Passenger", null)
-                        .WithMany()
-                        .HasForeignKey("PassengerID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
 #pragma warning restore 612, 618
         }
     }

@@ -3,6 +3,17 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Avoiding CORS issues...
+/*builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin();
+        policy.AllowAnyMethod();
+        policy.AllowAnyMethod();
+    });
+});*/
+
 // Prepare configuration to use app config file
 ConfigurationManager configuration = builder.Configuration;
 
