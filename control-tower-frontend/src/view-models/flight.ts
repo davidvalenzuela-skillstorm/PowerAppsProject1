@@ -1,8 +1,8 @@
 interface Flight
 {
-   flightNumber : number,
-   departureDateTime : Date,
-   arrivalDateTime : Date,
+   id : number,
+   departureDateTime : string,
+   arrivalDateTime : string,
    departureAirport : string,
    arrivalAirport : string,
    passengerLimit : number
