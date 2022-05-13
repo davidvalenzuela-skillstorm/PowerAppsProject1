@@ -3,6 +3,7 @@ import React from 'react';
 import APIService from '../../services/apiService';
 import Flight from '../../view-models/flight';
 import FlightDataTable from '../flight_data_table';
+import FlightSearchOptions from '../flight_search_options';
 
 type FlightsViewProps =
 {
@@ -31,6 +32,7 @@ class FlightsView extends React.Component<any, FlightsViewProps>
       return (
          <div className='flights_view'>
             <h1>Managing Flights</h1>
+            <FlightSearchOptions />
             {this.state.data.length > 0 ?
                <FlightDataTable flightData={this.state.data} /> // Display this if there is data
                :
