@@ -1,6 +1,6 @@
 import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
 import React from 'react';
-import Flight from '../view-models/flight';
+import { Flight } from '../view-models/flight';
 
 type FlightDataTableProps =
 {

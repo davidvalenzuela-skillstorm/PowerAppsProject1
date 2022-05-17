@@ -109,6 +109,81 @@ namespace Control_Tower.Controllers
             return flights;
         }
 
+        // GET: api/Flights/Params?flightNumber=[flightNumber]&&departureType=[departureType]&&departureDateTime1=[departureDateTime1]&&departureDateTime2=[departureDateTime2]&&arrivalType=[arrivalType]&&arrivalDateTime1=[arrivalDateTime1]&&arrivalDateTime2=[arrivalDateTime2]&&departureAirport=[departureAirport]&&arrivalAirport=[arrivalAirport]&&passengerLimit=[passengerLimit]
+        [HttpGet("Params")]
+        public async Task<ActionResult<IEnumerable<Flight>>> GetFlightsWithParams([FromQuery] int? flightNumber, [FromQuery] int departureType, [FromQuery] DateTime? departureDateTime1, [FromQuery] DateTime? departureDateTime2, [FromQuery] int arrivalType, [FromQuery] DateTime? arrivalDateTime1, [FromQuery] DateTime? arrivalDateTime2, [FromQuery] string departureAirport, [FromQuery] string arrivalAirport, [FromQuery] int? passengerLimit)
+        {
+            IQueryable<Flight> query = _context.Flights.AsQueryable();
+
+            // Check flight number
+            if (flightNumber != null && flightNumber >= 100)
+            {
+                query = query.Where(flight => flight.ID == flightNumber);
+            }
+
+            // Check type of departure date query
+            if (departureDateTime1 != null)
+            {
+                switch (departureType)
+                {
+                    default:
+                    case 0: // Before departure date 1
+                        query = query.Where(flight => flight.DepartureDateTime <= departureDateTime1);
+                        break;
+                    case 1: // After departure date 1
+                        query = query.Where(flight => flight.DepartureDateTime >= departureDateTime1);
+                        break;
+                    case 2: // Between departure dates 1 and 2
+                        if (departureDateTime2 != null)
+                        {
+                            query = query.Where(flight => flight.DepartureDateTime >= departureDateTime1 && flight.DepartureDateTime <= departureDateTime2);
+                        }
+                        break;
+                }
+            }
+
+            // Check type of arrival date query
+            if (arrivalDateTime1 != null)
+            {
+                switch (arrivalType)
+                {
+                    default:
+                    case 0: // Before arrival date 1
+                        query = query.Where(flight => flight.ArrivalDateTime <= arrivalDateTime1);
+                        break;
+                    case 1: // After arrival date 1
+                        query = query.Where(flight => flight.ArrivalDateTime >= arrivalDateTime1);
+                        break;
+                    case 2: // Between arrival dates 1 and 2
+                        if (arrivalDateTime2 != null)
+                        {
+                            query = query.Where(flight => flight.ArrivalDateTime >= arrivalDateTime1 && flight.ArrivalDateTime <= arrivalDateTime2);
+                        }
+                        break;
+                }
+            }
+
+            // Check departure airport
+            if (departureAirport != null && departureAirport != "")
+            {
+                query = query.Where(flight => flight.DepartureAirport.Contains(departureAirport));
+            }
+
+            // Check arrival airport
+            if (arrivalAirport != null && arrivalAirport != "")
+            {
+                query = query.Where(flight => flight.ArrivalAirport.Contains(arrivalAirport));
+            }
+
+            // Check passenger limit
+            if (passengerLimit != null && passengerLimit >= 0)
+            {
+                query = query.Where(flight => flight.PassengerLimit == passengerLimit);
+            }
+
+            return query.ToList();
+        }
+
         // PUT: api/Flights/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]

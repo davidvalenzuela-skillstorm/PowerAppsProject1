@@ -1,7 +1,7 @@
 import { Button } from '@mui/material';
 import React from 'react';
 import APIService from '../../services/apiService';
-import Flight from '../../view-models/flight';
+import { Flight, FlightDataParams } from '../../view-models/flight';
 import FlightDataTable from '../flight_data_table';
 import FlightSearchOptions from '../flight_search_options';
 
@@ -19,6 +19,7 @@ class FlightsView extends React.Component<any, FlightsViewProps>
       {
          data: []
       }
+      this.updateFlightData = this.updateFlightData.bind(this);
    }
 
    componentDidMount()
@@ -27,12 +28,17 @@ class FlightsView extends React.Component<any, FlightsViewProps>
       APIService.getFlights().then(flightData => this.setState({data: flightData}))
    }
 
+   updateFlightData(params : FlightDataParams)
+   {
+      APIService.getFlightsWithParams(params).then(flightData => this.setState({data: flightData}));
+   }
+
    render()
    {
       return (
          <div className='flights_view'>
             <h1>Managing Flights</h1>
-            <FlightSearchOptions />
+            <FlightSearchOptions search={this.updateFlightData} />
             {this.state.data.length > 0 ?
                <FlightDataTable flightData={this.state.data} /> // Display this if there is data
                :
