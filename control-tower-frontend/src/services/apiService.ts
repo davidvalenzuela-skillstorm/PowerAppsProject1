@@ -45,6 +45,7 @@ const getFlightsWithParams = async function(obj : FlightDataParams) : Promise<Fl
    if (obj.arrivalAirport   && obj.arrivalAirport   !== "") query += "arrivalAirport="   + obj.arrivalAirport   + "&";
    if (obj.passengerLimit)     query += "passengerLimit="     + obj.passengerLimit;
 
+   // Make the query
    await fetch(API.flightsController + query)
    .then(reponse => reponse.json())
    .then(content => data = content)
@@ -57,11 +58,30 @@ const getFlightsWithParams = async function(obj : FlightDataParams) : Promise<Fl
    return data;
 }
 
+// Edit a flight and return whether the operation was successful
+const editFlight = async function(flight : Flight) : Promise<boolean>
+{
+   // Attempt to submit the edit
+   const response = await fetch(API.flightsController + flight.id,
+   {
+      method: 'PUT',
+      headers: {
+         'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(flight)
+   });
+
+   if (response.ok) return true;
+   else console.error(`ERROR: Could not submit flight edit, reponse status is ${response.status}!`);
+   return false;
+}
+
 // All functions to export go here
 const APIService =
 {
    getFlights,
-   getFlightsWithParams
+   getFlightsWithParams,
+   editFlight
 }
 
 export default APIService;

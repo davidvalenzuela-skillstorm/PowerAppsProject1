@@ -5,19 +5,33 @@ import { Flight, FlightDataParams } from '../../view-models/flight';
 import FlightDataTable from '../flight_data_table';
 import FlightSearchOptions from '../flight_search_options';
 
-type FlightsViewProps =
+type FlightsViewState =
 {
-   data : Array<Flight>
+   data : Array<Flight>,
+   searchParams : FlightDataParams
 };
 
-class FlightsView extends React.Component<any, FlightsViewProps>
+class FlightsView extends React.Component<any, FlightsViewState>
 {
    constructor(props : any)
    {
       super(props);
       this.state =
       {
-         data: []
+         data: [],
+         searchParams:
+         {
+            flightNumber: null,
+            departureType: 1,
+            departureDateTime1: null,
+            departureDateTime2: null,
+            arrivalType: 1,
+            arrivalDateTime1: null,
+            arrivalDateTime2: null,
+            departureAirport: "",
+            arrivalAirport: "",
+            passengerLimit: null
+         }
       }
       this.updateFlightData = this.updateFlightData.bind(this);
    }
@@ -28,9 +42,17 @@ class FlightsView extends React.Component<any, FlightsViewProps>
       APIService.getFlights().then(flightData => this.setState({data: flightData}))
    }
 
-   updateFlightData(params : FlightDataParams)
+   updateFlightData(params : FlightDataParams | undefined)
    {
-      APIService.getFlightsWithParams(params).then(flightData => this.setState({data: flightData}));
+      if (params) // If parameters given, probably called from <FlightSearchOptions>
+      {
+         this.setState({searchParams: params});
+         APIService.getFlightsWithParams(params).then(flightData => this.setState({data: flightData}));
+      }
+      else // If no parameters given, probably just want to refresh data table
+      {
+         APIService.getFlightsWithParams(this.state.searchParams).then(flightData => this.setState({data: flightData}));
+      }
    }
 
    render()
@@ -40,7 +62,7 @@ class FlightsView extends React.Component<any, FlightsViewProps>
             <h1>Managing Flights</h1>
             <FlightSearchOptions search={this.updateFlightData} />
             {this.state.data.length > 0 ?
-               <FlightDataTable flightData={this.state.data} /> // Display this if there is data
+               <FlightDataTable flightData={this.state.data} update={this.updateFlightData} /> // Display this if there is data
                :
                <h2>No entries found</h2> // Display this if there is no data
             }

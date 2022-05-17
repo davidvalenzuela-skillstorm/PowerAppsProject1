@@ -178,7 +178,7 @@ class FlightSearchOptions extends React.Component<any, FlightDataParams>
                />
                <Divider />
                <br />
-               <Button variant="outlined" onClick={() =>this.props.search(this.state)}>Search</Button>
+               <Button variant="outlined" onClick={() => this.props.search(this.state)}>Search</Button>
             </AccordionDetails>
          </Accordion>
       );

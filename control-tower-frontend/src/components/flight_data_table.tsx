@@ -1,10 +1,12 @@
 import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
 import React from 'react';
 import { Flight } from '../view-models/flight';
+import DataTableSettings from './data_table_settings';
 
 type FlightDataTableProps =
 {
    flightData : Array<Flight>;
+   update : Function
 };
 
 class FlightDataTable extends React.Component<FlightDataTableProps, any>
@@ -15,6 +17,7 @@ class FlightDataTable extends React.Component<FlightDataTableProps, any>
             <Table>
                <TableHead>
                   <TableRow>
+                     <TableCell>Settings</TableCell>
                      <TableCell>Flight Number</TableCell>
                      <TableCell align="right">Departure Date/Time</TableCell>
                      <TableCell align="right">Arrival Date/Time</TableCell>
@@ -26,6 +29,7 @@ class FlightDataTable extends React.Component<FlightDataTableProps, any>
                <TableBody>
                   {this.props.flightData.map((entry) => (
                      <TableRow key={entry.id}>
+                        <TableCell><DataTableSettings itemType="flight" item={entry} update={this.props.update} /></TableCell>
                         <TableCell>{entry.id}</TableCell>
                         <TableCell align="right">{entry.departureDateTime}</TableCell>
                         <TableCell align="right">{entry.arrivalDateTime}</TableCell>
