@@ -92,7 +92,33 @@ const deleteFlight = async function(ID : number) : Promise<boolean>
    });
 
    if (response.ok) return true;
-   else console.error(`ERROR: Could not submit flight deletion, reponse status is ${response.status}`);
+   else console.error(`ERROR: Could not submit flight deletion, reponse status is ${response.status}!`);
+   return false;
+}
+
+// Add a flight
+const addFlight = async function(flight : Flight) : Promise<boolean>
+{
+   // Attempt to submit the addition
+   const response = await fetch(API.flightsController,
+   {
+      method: 'POST',
+      headers:
+      {
+         'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(
+      {
+         departureDateTime: flight.departureDateTime,
+         arrivalDateTime: flight.arrivalDateTime,
+         departureAirport: flight.departureAirport,
+         arrivalAirport: flight.arrivalAirport,
+         passengerLimit: flight.passengerLimit
+      })
+   });
+
+   if (response.ok) return true;
+   else console.error(`ERROR: Could not submit flight addition, response status is ${response.status}!`);
    return false;
 }
 
@@ -102,7 +128,8 @@ const APIService =
    getFlights,
    getFlightsWithParams,
    editFlight,
-   deleteFlight
+   deleteFlight,
+   addFlight
 }
 
 export default APIService;

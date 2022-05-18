@@ -5,7 +5,7 @@ import React from 'react';
 import APIService from '../services/apiService';
 import { Flight } from '../view-models/flight';
 
-const style = {
+const FlightEditMenuStyle = {
    position: 'absolute',
    top: '50%',
    left: '50%',
@@ -75,76 +75,76 @@ class FlightEditMenu extends React.Component<any, Flight>
                aria-labelledby="editItemMenuTitle"
                aria-describedby="editItemMenuBody"
             >
-               <Box sx={style}>
-                  <Typography id="editItemMenuTitle" variant="h6" component="h2">
-                     Editing Flight {this.props.item.id}
-                  </Typography>
-                  <Typography id="editItemMenuBody" component="div">
-                     <br />
-                     <LocalizationProvider dateAdapter={AdapterDateFns}>
-                        <DateTimePicker
-                           label="Departure Date"
-                           value={this.state.departureDateTime}
-                           onChange={(newValue) => this.setState({departureDateTime: newValue ?? new Date().toJSON()})}
-                           renderInput={
-                              (params) => <TextField {...params} />
-                           }
-                        />
-                        <br />
-                        <br />
-                        <Divider />
-                        <br />
-                        <DateTimePicker
-                           label="Arrival Date"
-                           value={this.state.arrivalDateTime}
-                           onChange={(newValue) => this.setState({arrivalDateTime: newValue ?? new Date().toJSON()})}
-                           renderInput={
-                              (params) => <TextField {...params} />
-                           }
-                        />
-                     </LocalizationProvider>
-                     <br />
-                     <br />
-                     <Divider />
-                     <br />
-                     <TextField
-                        label="Departure Airport"
-                        variant="outlined"
-                        size="small"
-                        value={this.state.departureAirport}
-                        onChange={(event) => this.setState({departureAirport: event.target.value})}
+            <Box sx={FlightEditMenuStyle}>
+               <Typography id="editItemMenuTitle" variant="h6" component="h2">
+                  Editing Flight {this.props.item.id}
+               </Typography>
+               <Typography id="editItemMenuBody" component="div">
+                  <br />
+                  <LocalizationProvider dateAdapter={AdapterDateFns}>
+                     <DateTimePicker
+                        label="Departure Date"
+                        value={this.state.departureDateTime}
+                        onChange={(newValue) => this.setState({departureDateTime: newValue ?? new Date().toJSON()})}
+                        renderInput={
+                           (params) => <TextField {...params} />
+                        }
                      />
                      <br />
                      <br />
                      <Divider />
                      <br />
-                     <TextField
-                        label="Arrival Airport"
-                        variant="outlined"
-                        size="small"
-                        value={this.state.arrivalAirport}
-                        onChange={(event) => this.setState({arrivalAirport: event.target.value})}
+                     <DateTimePicker
+                        label="Arrival Date"
+                        value={this.state.arrivalDateTime}
+                        onChange={(newValue) => this.setState({arrivalDateTime: newValue ?? new Date().toJSON()})}
+                        renderInput={
+                           (params) => <TextField {...params} />
+                        }
                      />
-                     <br />
-                     <br />
-                     <Divider />
-                     <br />
-                     <TextField
-                        label="Passenger Limit"
-                        variant="outlined"
-                        type="number"
-                        size="small"
-                        value={this.state.passengerLimit || ""}
-                        onChange={(event) => this.setState({passengerLimit: parseInt(event.target.value)})}
-                     />
-                     <br />
-                     <br />
-                     <Button variant="outlined" onClick={() => this.closeMenu()}>Cancel</Button>
-                     &nbsp;&nbsp;&nbsp;&nbsp;
-                     <Button variant="contained" onClick={() => this.submitFlightEdit()}>Submit</Button>
-                  </Typography>
-               </Box>
-            </Modal>
+                  </LocalizationProvider>
+                  <br />
+                  <br />
+                  <Divider />
+                  <br />
+                  <TextField
+                     label="Departure Airport"
+                     variant="outlined"
+                     size="small"
+                     value={this.state.departureAirport}
+                     onChange={(event) => this.setState({departureAirport: event.target.value})}
+                  />
+                  <br />
+                  <br />
+                  <Divider />
+                  <br />
+                  <TextField
+                     label="Arrival Airport"
+                     variant="outlined"
+                     size="small"
+                     value={this.state.arrivalAirport}
+                     onChange={(event) => this.setState({arrivalAirport: event.target.value})}
+                  />
+                  <br />
+                  <br />
+                  <Divider />
+                  <br />
+                  <TextField
+                     label="Passenger Limit"
+                     variant="outlined"
+                     type="number"
+                     size="small"
+                     value={this.state.passengerLimit || ""}
+                     onChange={(event) => this.setState({passengerLimit: parseInt(event.target.value)})}
+                  />
+                  <br />
+                  <br />
+                  <Button variant="outlined" onClick={() => this.closeMenu()}>Cancel</Button>
+                  &nbsp;&nbsp;&nbsp;&nbsp;
+                  <Button variant="contained" onClick={() => this.submitFlightEdit()}>Submit</Button>
+               </Typography>
+            </Box>
+         </Modal>
       );
    }
 }
