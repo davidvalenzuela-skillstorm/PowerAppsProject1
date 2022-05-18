@@ -65,7 +65,8 @@ const editFlight = async function(flight : Flight) : Promise<boolean>
    const response = await fetch(API.flightsController + flight.id,
    {
       method: 'PUT',
-      headers: {
+      headers:
+      {
          'Content-Type': 'application/json'
       },
       body: JSON.stringify(flight)
@@ -76,12 +77,32 @@ const editFlight = async function(flight : Flight) : Promise<boolean>
    return false;
 }
 
+// Delete a flight
+const deleteFlight = async function(ID : number) : Promise<boolean>
+{
+   // Attempt to submit the deletion
+   const response = await fetch(API.flightsController + ID,
+   {
+      method: 'DELETE',
+      headers:
+      {
+         'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(ID)
+   });
+
+   if (response.ok) return true;
+   else console.error(`ERROR: Could not submit flight deletion, reponse status is ${response.status}`);
+   return false;
+}
+
 // All functions to export go here
 const APIService =
 {
    getFlights,
    getFlightsWithParams,
-   editFlight
+   editFlight,
+   deleteFlight
 }
 
 export default APIService;

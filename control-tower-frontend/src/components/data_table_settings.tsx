@@ -2,8 +2,8 @@ import { Button } from '@mui/material';
 import React from 'react';
 import { Flight } from '../view-models/flight';
 import Passenger from '../view-models/passenger';
+import FlightDeleteDialog from './flight_delete_dialog';
 import FlightEditMenu from './flight_edit_menu';
-//import FlightEditMenu from './flight_edit_menu';
 
 type DataTableSettingsProps =
 {
@@ -14,6 +14,7 @@ type DataTableSettingsProps =
 
 type DataTableSettingsState =
 {
+   deleteDialogOpen : boolean,
    editItemMenuOpen : boolean
 }
 
@@ -24,15 +25,16 @@ class DataTableSettings extends React.Component<DataTableSettingsProps, DataTabl
       super(props);
       this.state =
       {
+         deleteDialogOpen: false,
          editItemMenuOpen: false
       }
-      this.deleteItem = this.deleteItem.bind(this);
+      this.closeDeleteDialog = this.closeDeleteDialog.bind(this);
       this.closeEditItemMenu = this.closeEditItemMenu.bind(this);
-      this.editItem = this.editItem.bind(this);
    }
 
-   deleteItem()
+   closeDeleteDialog()
    {
+      this.setState({deleteDialogOpen: false});
    }
 
    closeEditItemMenu()
@@ -40,17 +42,14 @@ class DataTableSettings extends React.Component<DataTableSettingsProps, DataTabl
       this.setState({editItemMenuOpen: false});
    }
 
-   editItem()
-   {
-   }
-
    render()
    {
       return (
          <span>
-            <Button size="small">&#10006;</Button>
+            <Button size="small" onClick={() => this.setState({deleteDialogOpen: true})}>&#10006;</Button>
             <Button size="small" onClick={() => this.setState({editItemMenuOpen: true})}>&#9998;</Button>
             <FlightEditMenu open={this.state.editItemMenuOpen} onClose={this.closeEditItemMenu} item={this.props.item} update={this.props.update} />
+            <FlightDeleteDialog open={this.state.deleteDialogOpen} onClose={this.closeDeleteDialog} item={this.props.item} update={this.props.update} />
          </span>
       );
    }
