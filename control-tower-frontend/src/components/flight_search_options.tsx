@@ -37,7 +37,7 @@ class FlightSearchOptions extends React.Component<any, FlightDataParams>
                <DateTimePicker
                   label="Departure Date"
                   value={this.state.departureDateTime1}
-                  onChange={(newValue) => this.setState({departureDateTime1: newValue ?? new Date(), departureDateTime2: new Date(0)})}
+                  onChange={(newValue) => this.setState({departureDateTime1: newValue, departureDateTime2: null})}
                   renderInput={
                      (params) => <TextField {...params} />
                   }
@@ -52,7 +52,7 @@ class FlightSearchOptions extends React.Component<any, FlightDataParams>
                <DateTimePicker
                   label="First Departure Date"
                   value={this.state.departureDateTime1}
-                  onChange={(newValue) => this.setState({departureDateTime1: newValue ?? new Date()})}
+                  onChange={(newValue) => this.setState({departureDateTime1: newValue})}
                   renderInput={
                      (params) => <TextField {...params} />
                   }
@@ -60,7 +60,7 @@ class FlightSearchOptions extends React.Component<any, FlightDataParams>
                <DateTimePicker
                   label="Second Departure Date"
                   value={this.state.departureDateTime2}
-                  onChange={(newValue) => this.setState({departureDateTime2: newValue ?? new Date()})}
+                  onChange={(newValue) => this.setState({departureDateTime2: newValue})}
                   renderInput={
                      (params) => <TextField {...params} />
                   }
@@ -76,7 +76,7 @@ class FlightSearchOptions extends React.Component<any, FlightDataParams>
                <DateTimePicker
                   label="Arrival Date"
                   value={this.state.arrivalDateTime1}
-                  onChange={(newValue) => this.setState({arrivalDateTime1: newValue ?? new Date(), arrivalDateTime2: new Date(0)})}
+                  onChange={(newValue) => this.setState({arrivalDateTime1: newValue, arrivalDateTime2: null})}
                   renderInput={
                      (params) => <TextField {...params} />
                   }
@@ -91,7 +91,7 @@ class FlightSearchOptions extends React.Component<any, FlightDataParams>
                <DateTimePicker
                   label="First Arrival Date"
                   value={this.state.arrivalDateTime1}
-                  onChange={(newValue) => this.setState({arrivalDateTime1: newValue ?? new Date()})}
+                  onChange={(newValue) => this.setState({arrivalDateTime1: newValue})}
                   renderInput={
                      (params) => <TextField {...params} />
                   }
@@ -99,7 +99,7 @@ class FlightSearchOptions extends React.Component<any, FlightDataParams>
                <DateTimePicker
                   label="Second Arrival Date"
                   value={this.state.arrivalDateTime2}
-                  onChange={(newValue) => this.setState({arrivalDateTime2: newValue ?? new Date()})}
+                  onChange={(newValue) => this.setState({arrivalDateTime2: newValue})}
                   renderInput={
                      (params) => <TextField {...params} />
                   }
