@@ -1,4 +1,5 @@
 import { Flight, FlightDataParams } from "../view-models/flight";
+import { Passenger, PassengerDataParams } from "../view-models/passenger";
 
 // Details about how to connect to the backend
 const API =
@@ -122,6 +123,116 @@ const addFlight = async function(flight : Flight) : Promise<boolean>
    return false;
 }
 
+// Get list of all passenger data
+const getPassengers = async function() : Promise<Passenger[]>
+{
+   let data : Array<Passenger>;
+   data = [];
+
+   await fetch(API.passengersController)
+   .then(reponse => reponse.json())
+   .then(content => data = content)
+   .catch(err =>
+   {
+      console.error(`ERROR: Unable to retrieve all passengers!\n${err}`);
+      data = [];
+   });
+
+   return data;
+}
+
+// Get list of passenger data that matches some query parameters
+const getPassengersWithParams = async function(obj : PassengerDataParams) : Promise<Passenger[]>
+{
+   let data : Array<Passenger>;
+   data = [];
+
+   // Sanitize parameters and prepare query
+   let query = "Params?";
+   //if (obj.ID)          query += "ID="              + obj.ID                     + "&";
+   if (obj.name)          query += "name="            + obj.name                   + "&";
+   if (obj.job)           query += "job="             + obj.job                    + "&";
+   if (obj.email)         query += "email="           + obj.email                  + "&";
+   if (obj.age)           query += "age="             + obj.age                    + "&";
+   if (obj.flightID)      query += "flightID="        + obj.flightID               + "&";
+
+   // Make the query
+   await fetch(API.passengersController + query)
+   .then(reponse => reponse.json())
+   .then(content => data = content)
+   .catch(err =>
+   {
+      console.error(`ERROR: Unable to retrieve passengers with given parameters!\n${err}`);
+      data = [];
+   });
+
+   return data;
+}
+
+// Edit a passenger and return whether the operation was successful
+const editPassenger = async function(passenger : Passenger) : Promise<boolean>
+{
+   // Attempt to submit the edit
+   const response = await fetch(API.passengersController + passenger.id,
+   {
+      method: 'PUT',
+      headers:
+      {
+         'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(passenger)
+   });
+
+   if (response.ok) return true;
+   else console.error(`ERROR: Could not submit passenger edit, reponse status is ${response.status}!`);
+   return false;
+}
+
+// Delete a passenger
+const deletePassenger = async function(ID : number) : Promise<boolean>
+{
+   // Attempt to submit the deletion
+   const response = await fetch(API.passengersController + ID,
+   {
+      method: 'DELETE',
+      headers:
+      {
+         'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(ID)
+   });
+
+   if (response.ok) return true;
+   else console.error(`ERROR: Could not submit passengers deletion, reponse status is ${response.status}!`);
+   return false;
+}
+
+// Add a passenger
+const addPassenger = async function(passenger : Passenger) : Promise<boolean>
+{
+   // Attempt to submit the addition
+   const response = await fetch(API.passengersController,
+   {
+      method: 'POST',
+      headers:
+      {
+         'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(
+      {
+         name: passenger.name,
+         job: passenger.job,
+         email: passenger.email,
+         age: passenger.age,
+         flightID: passenger.flightID
+      })
+   });
+
+   if (response.ok) return true;
+   else console.error(`ERROR: Could not submit passenger addition, response status is ${response.status}!`);
+   return false;
+}
+
 // All functions to export go here
 const APIService =
 {
@@ -129,7 +240,12 @@ const APIService =
    getFlightsWithParams,
    editFlight,
    deleteFlight,
-   addFlight
+   addFlight,
+   getPassengers,
+   getPassengersWithParams,
+   editPassenger,
+   deletePassenger,
+   addPassenger
 }
 
 export default APIService;

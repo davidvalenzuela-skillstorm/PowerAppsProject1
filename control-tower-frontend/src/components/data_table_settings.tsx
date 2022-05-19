@@ -1,9 +1,11 @@
 import { Button } from '@mui/material';
 import React from 'react';
 import { Flight } from '../view-models/flight';
-import Passenger from '../view-models/passenger';
+import { Passenger } from '../view-models/passenger';
 import FlightDeleteDialog from './flight_delete_dialog';
 import FlightEditMenu from './flight_edit_menu';
+import PassengerDeleteDialog from './passenger_delete_dialog';
+import PassengerEditMenu from './passenger_edit_menu';
 
 type DataTableSettingsProps =
 {
@@ -44,12 +46,21 @@ class DataTableSettings extends React.Component<DataTableSettingsProps, DataTabl
 
    render()
    {
+      // Choose the right components based on item type (flight or passenger)
+      let editMenu = <FlightEditMenu open={this.state.editItemMenuOpen} onClose={this.closeEditItemMenu} item={this.props.item} update={this.props.update} />;
+      let deleteDialog = <FlightDeleteDialog open={this.state.deleteDialogOpen} onClose={this.closeDeleteDialog} item={this.props.item} update={this.props.update} />;
+      if (this.props.itemType === 'passenger')
+      {
+         editMenu = <PassengerEditMenu open={this.state.editItemMenuOpen} onClose={this.closeEditItemMenu} item={this.props.item} update={this.props.update} />;
+         deleteDialog = <PassengerDeleteDialog open={this.state.deleteDialogOpen} onClose={this.closeDeleteDialog} item={this.props.item} update={this.props.update} />;
+      }
+
       return (
          <span>
             <Button size="small" onClick={() => this.setState({deleteDialogOpen: true})}>&#10006;</Button>
             <Button size="small" onClick={() => this.setState({editItemMenuOpen: true})}>&#9998;</Button>
-            <FlightEditMenu open={this.state.editItemMenuOpen} onClose={this.closeEditItemMenu} item={this.props.item} update={this.props.update} />
-            <FlightDeleteDialog open={this.state.deleteDialogOpen} onClose={this.closeDeleteDialog} item={this.props.item} update={this.props.update} />
+            {editMenu}
+            {deleteDialog}
          </span>
       );
    }

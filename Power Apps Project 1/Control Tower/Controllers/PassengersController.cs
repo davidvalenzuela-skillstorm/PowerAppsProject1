@@ -106,6 +106,51 @@ namespace Control_Tower.Controllers
             return passengers;
         }
 
+        // GET: api/Passengers/Params?ID=[ID]&&name=[name]&&job=[job]&&email=[email]&&age=[age]&&flightID=[flightID]
+        [HttpGet("Params")]
+        public async Task<ActionResult<IEnumerable<Passenger>>> GetPassengersWithParams([FromQuery] int? ID, [FromQuery] string name, [FromQuery] string job, [FromQuery] string email, [FromQuery] int? age, [FromQuery] int? flightID)
+        {
+            IQueryable<Passenger> query = _context.Passengers.AsQueryable();
+
+            // Check ID
+            if (ID != null && ID >= 100)
+            {
+                query = query.Where(passenger => passenger.ID == ID);
+            }
+
+            // Check name
+            if (name != null && name != "")
+            {
+                query = query.Where(passenger => passenger.Name.Contains(name));
+            }
+
+            // Check job
+            if (job != null && job != "")
+            {
+                query = query.Where(passenger => passenger.Job.Contains(job));
+            }
+
+            // Check email
+            if (email != null && email != "")
+            {
+                query = query.Where(passenger => passenger.Email.Contains(email));
+            }
+
+            // Check age
+            if (age != null && age >= 0)
+            {
+                query = query.Where(passenger => passenger.Age == age);
+            }
+
+            // Check flight ID
+            if (flightID != null && flightID >= 0)
+            {
+                query = query.Where(passenger => passenger.FlightID == flightID);
+            }
+
+            return query.ToList();
+        }
+
         // PUT: api/Passengers/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]

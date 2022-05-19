@@ -27,7 +27,7 @@ type FlightAddMenuProps =
 interface FlightAddMenuState extends Flight
 {
    departureDateTimeError     : string,
-   departureDateTimeHasError : boolean,
+   departureDateTimeHasError  : boolean,
    arrivalDateTimeError       : string,
    arrivalDateTimeHasError    : boolean,
    departureAirportError      : string,

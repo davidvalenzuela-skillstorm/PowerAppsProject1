@@ -53,7 +53,7 @@ class FlightsView extends React.Component<any, FlightsViewState>
       if (params) // If parameters given, probably called from <FlightSearchOptions>
       {
          this.setState({searchParams: params});
-         APIService.getFlightsWithParams(params).then(flightData =>this.setState(
+         APIService.getFlightsWithParams(params).then(flightData => this.setState(
             {
                data: flightData,
                firstLoadComplete: true

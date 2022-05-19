@@ -1,11 +1,20 @@
-interface Passenger
+// Passenger model
+export interface Passenger
 {
-   ID : number,
+   id : number,
    name : string,
    job : string,
    email : string,
-   age: number,
-   bookingNumber : number
+   age : number,
+   flightID : number
 }
 
-export default Passenger;
+// Useful type for flight data queries
+export type PassengerDataParams =
+{
+   name : string | null,
+   job : string | null,
+   email : string | null,
+   age : number | null,
+   flightID : number | null
+}
