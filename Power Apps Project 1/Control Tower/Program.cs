@@ -4,15 +4,18 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Avoiding CORS issues...
-/*builder.Services.AddCors(options =>
+string corsPolicy = "_corsPolicy";
+builder.Services.AddCors(options =>
 {
-    options.AddPolicy(name: "AllowAll", policy =>
+    options.AddPolicy(name: corsPolicy, policy =>
     {
-        policy.AllowAnyOrigin();
+        /*policy.AllowAnyOrigin();
         policy.AllowAnyMethod();
-        policy.AllowAnyMethod();
+        policy.AllowAnyHeader();*/
+        policy.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod();
+        policy.WithOrigins("https://localhost:3000").AllowAnyHeader().AllowAnyMethod();
     });
-});*/
+});
 
 // Prepare configuration to use app config file
 ConfigurationManager configuration = builder.Configuration;
@@ -37,6 +40,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// Enable CORS policy
+app.UseCors(corsPolicy);
 
 app.UseAuthorization();
 

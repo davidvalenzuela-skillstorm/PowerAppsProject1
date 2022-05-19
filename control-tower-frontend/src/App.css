@@ -3,3 +3,8 @@
   width: 90%;
   text-align: center;
 }
+
+.search_options_label {
+  display: inline-block;
+  width: 215px;
+}
