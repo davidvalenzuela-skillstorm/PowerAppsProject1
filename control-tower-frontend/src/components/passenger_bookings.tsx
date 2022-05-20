@@ -1,4 +1,4 @@
-import { Modal, Box, Typography, TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, Button } from '@mui/material';
+import { Modal, Box, Typography, TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, Button, TextField } from '@mui/material';
 import React from 'react';
 import APIService from '../services/apiService';
 import { Flight } from '../view-models/flight';
@@ -25,7 +25,8 @@ type PassengerBookingsProps =
 
 type PassengerBookingsState =
 {
-   flightData : Array<Flight>
+   flightData : Array<Flight>,
+   newFlightBooking : number
 }
 
 class PassengerBookings extends React.Component<PassengerBookingsProps, PassengerBookingsState>
@@ -35,7 +36,8 @@ class PassengerBookings extends React.Component<PassengerBookingsProps, Passenge
       super(props);
       this.state =
       {
-         flightData: []
+         flightData: [],
+         newFlightBooking: 0
       };
       this.loadFilghtData = this.loadFilghtData.bind(this);
       this.deleteFlightBooking = this.deleteFlightBooking.bind(this);
@@ -52,9 +54,19 @@ class PassengerBookings extends React.Component<PassengerBookingsProps, Passenge
          .then(data => this.setState({flightData: data}));
    }
 
+   addFlightBooking()
+   {
+      // Don't proceed if the flight number is invalid
+      if (this.state.newFlightBooking < 0) return;
+
+      // Submit booking addition
+      APIService.addBookingWithPassengerAndFlight(this.props.passenger.id, this.state.newFlightBooking)
+         .then(() => this.loadFilghtData());
+   }
+
    deleteFlightBooking(flightID : number)
    {
-      APIService.deleteBookingFromPassengerAndFlight(this.props.passenger.id, flightID)
+      APIService.deleteBookingWithPassengerAndFlight(this.props.passenger.id, flightID)
          .then(() => this.loadFilghtData());
    }
 
@@ -114,6 +126,18 @@ class PassengerBookings extends React.Component<PassengerBookingsProps, Passenge
                         No entries found
                      </Typography>
                   </>}
+                  <br />
+                  <span style={{color: 'white', paddingRight: '20px'}}>Add new flight booking:</span>
+                  <TextField
+                     label="New Flight Booking"
+                     variant="outlined"
+                     type="number"
+                     size="small"
+                     value={this.state.newFlightBooking || ""}
+                     onChange={(event) => this.setState({newFlightBooking: parseInt(event.target.value)})}
+                  />
+                  &nbsp;&nbsp;&nbsp;&nbsp;
+                  <Button variant='contained' onClick={() => this.addFlightBooking()}>Add new booking</Button>
                </Typography>
             </Box>
          </Modal>

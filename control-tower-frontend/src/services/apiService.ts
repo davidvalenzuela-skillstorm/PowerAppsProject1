@@ -251,8 +251,31 @@ const getFlightsByPassengerBookings = async function(passengerID : number) : Pro
    return data;
 }
 
+// Add a booking given a passenger ID and a flight ID
+const addBookingWithPassengerAndFlight = async function(passengerID : number, flightID : number) : Promise<boolean>
+{
+   // Attempt to submit the addition
+   const response = await fetch(API.bookingsController,
+      {
+         method: 'POST',
+         headers:
+         {
+            'Content-Type': 'application/json'
+         },
+         body: JSON.stringify(
+            {
+               'flightID': flightID,
+               'passengerID': passengerID
+            })
+      });
+   
+   if (response.ok) return true;
+   else console.error(`ERROR: Could not submit booking addition, response status is ${response.status}!`);
+   return false;
+}
+
 // Delete booking given a passenger ID and a flight ID
-const deleteBookingFromPassengerAndFlight = async function(passengerID : number, flightID : number) : Promise<boolean>
+const deleteBookingWithPassengerAndFlight = async function(passengerID : number, flightID : number) : Promise<boolean>
 {
    // Attempt to submit the deletion
    const response = await fetch(API.bookingsController + "FromPassengerAndFlight?passengerID=" + passengerID + "&flightID=" + flightID,
@@ -264,9 +287,9 @@ const deleteBookingFromPassengerAndFlight = async function(passengerID : number,
          }
       });
    
-      if (response.ok) return true;
-      else console.error(`ERROR: Could not submit booking deletion, reponse status is ${response.status}!`);
-      return false;
+   if (response.ok) return true;
+   else console.error(`ERROR: Could not submit booking deletion, reponse status is ${response.status}!`);
+   return false;
 }
 
 // All functions to export go here
@@ -283,7 +306,8 @@ const APIService =
    deletePassenger,
    addPassenger,
    getFlightsByPassengerBookings,
-   deleteBookingFromPassengerAndFlight
+   addBookingWithPassengerAndFlight,
+   deleteBookingWithPassengerAndFlight
 }
 
 export default APIService;

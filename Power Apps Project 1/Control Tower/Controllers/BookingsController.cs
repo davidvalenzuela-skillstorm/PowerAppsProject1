@@ -86,10 +86,23 @@ namespace Control_Tower.Controllers
         [HttpPost]
         public async Task<ActionResult<Booking>> PostBooking(Booking booking)
         {
-          if (_context.Bookings == null)
-          {
-              return Problem("Entity set 'CTContext.Bookings'  is null.");
-          }
+            if (_context.Bookings == null)
+            {
+                return Problem("Entity set 'CTContext.Bookings'  is null.");
+            }
+
+            var flight = await _context.Flights.FindAsync(booking.FlightID);
+            if (flight == null)
+            {
+                return NotFound();
+            }
+
+            var passenger = await _context.Passengers.FindAsync(booking.PassengerID);
+            if (passenger == null)
+            {
+                return NotFound();
+            }
+
             _context.Bookings.Add(booking);
             await _context.SaveChangesAsync();
 
