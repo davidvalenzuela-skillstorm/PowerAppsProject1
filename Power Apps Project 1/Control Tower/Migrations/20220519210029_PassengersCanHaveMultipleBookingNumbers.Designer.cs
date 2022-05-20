@@ -4,6 +4,7 @@ using Control_Tower.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,35 +12,17 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Control_Tower.Migrations
 {
     [DbContext(typeof(CTContext))]
-    partial class CTContextModelSnapshot : ModelSnapshot
+    [Migration("20220519210029_PassengersCanHaveMultipleBookingNumbers")]
+    partial class PassengersCanHaveMultipleBookingNumbers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.5")
+                .HasAnnotation("ProductVersion", "6.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("Control_Tower.Models.Booking", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
-
-                    b.Property<int>("FlightID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PassengerID")
-                        .HasColumnType("int");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("Bookings");
-                });
 
             modelBuilder.Entity("Control_Tower.Models.Flight", b =>
                 {
@@ -86,6 +69,9 @@ namespace Control_Tower.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("FlightID")
+                        .HasColumnType("int");
+
                     b.Property<string>("Job")
                         .HasColumnType("nvarchar(max)");
 
@@ -96,6 +82,36 @@ namespace Control_Tower.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Passengers");
+                });
+
+            modelBuilder.Entity("FlightPassenger", b =>
+                {
+                    b.Property<int>("FlightID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PassengersID")
+                        .HasColumnType("int");
+
+                    b.HasKey("FlightID", "PassengersID");
+
+                    b.HasIndex("PassengersID");
+
+                    b.ToTable("FlightPassenger");
+                });
+
+            modelBuilder.Entity("FlightPassenger", b =>
+                {
+                    b.HasOne("Control_Tower.Models.Flight", null)
+                        .WithMany()
+                        .HasForeignKey("FlightID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Control_Tower.Models.Passenger", null)
+                        .WithMany()
+                        .HasForeignKey("PassengersID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

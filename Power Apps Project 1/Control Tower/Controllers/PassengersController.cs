@@ -96,12 +96,21 @@ namespace Control_Tower.Controllers
 
         // Get: api/Passengers/BookingNumber/[bookingNumber]
         [HttpGet("BookingNumber/{bookingNumber}")]
-        public async Task<ActionResult<IEnumerable<Passenger>>> GetPassengersByBookingNumber(int bookingNumber)
+        public async Task<ActionResult<IEnumerable<Passenger>>> GetPassengersByBookingNumber(int? flightID)
         {
-            var passengers = await _context.Passengers
-                .Where(p =>
-                    bookingNumber == -1 ? p.FlightID == null || p.FlightID == 0 : p.FlightID == bookingNumber)
-                .ToListAsync();
+            if (flightID == null || flightID < 0)
+            {
+                return NotFound();
+            }
+
+            var passengers = new List<Passenger>();
+            var bookings = await _context.Bookings.ToArrayAsync();
+
+            foreach (var booking in bookings)
+            {
+                Passenger currentPassenger = _context.Passengers.Find(booking.PassengerID);
+                passengers.Add(currentPassenger);
+            }
 
             return passengers;
         }
@@ -145,10 +154,39 @@ namespace Control_Tower.Controllers
             // Check flight ID
             if (flightID != null && flightID >= 0)
             {
-                query = query.Where(passenger => passenger.FlightID == flightID);
+                var bookings = _context.Bookings;
+                List<int> passengerIDs = new List<int>();
+                foreach (Booking booking in bookings)
+                {
+                    passengerIDs.Add(booking.PassengerID);
+                }
+                query = query.Where(passenger => passengerIDs.Contains(passenger.ID));
             }
 
             return query.ToList();
+        }
+
+        // GET: api/Passengers/FlightsByBookings?passengerID=[passengerID]
+        [HttpGet("FlightsByBooking")]
+        public async Task<ActionResult<IEnumerable<Flight>>> GetFlightsByBookings([FromQuery] int? passengerID)
+        {
+            if (passengerID == null) return BadRequest();
+
+            var bookings = await _context.Bookings
+                .Where(booking => booking.PassengerID == passengerID)
+                .ToArrayAsync();
+
+            List<int> flightIDs = new List<int>();
+            foreach (Booking booking in bookings)
+            {
+                flightIDs.Add(booking.FlightID);
+            }
+
+            var flights = await _context.Flights
+                .Where(flight => flightIDs.Contains(flight.ID))
+                .ToListAsync();
+
+            return flights;
         }
 
         // PUT: api/Passengers/5

@@ -1,8 +1,18 @@
+import { Paper } from '@mui/material';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 import React from 'react';
 import './App.css';
 import FlightsView from './components/views/flights_view';
 import MainView from './components/views/main_view';
 import PassengersView from './components/views/passengers_view';
+
+const darkTheme = createTheme(
+{
+  palette:
+  {
+    mode: 'dark'
+  }
+});
 
 enum Views
 {
@@ -52,9 +62,13 @@ class App extends React.Component<any, AppState>
     }
 
     return (
-      <div className="App">
-        {view}
-      </div>
+      <ThemeProvider theme={darkTheme}>
+        <Paper elevation={0} style={{width: '100%', height: '100%', paddingTop: '25px'}}>
+          <div className="App">
+            {view}
+          </div>
+        </Paper>
+      </ThemeProvider>
     );
   }
 }

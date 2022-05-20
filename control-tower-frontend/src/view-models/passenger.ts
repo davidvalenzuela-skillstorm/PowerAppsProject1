@@ -5,8 +5,7 @@ export interface Passenger
    name : string,
    job : string,
    email : string,
-   age : number,
-   flightID : number
+   age : number
 }
 
 // Useful type for flight data queries

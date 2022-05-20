@@ -6,7 +6,8 @@ const API =
 {
    baseURL: "https://localhost:7174/api/",
    flightsController: "https://localhost:7174/api/Flights/",
-   passengersController: "https://localhost:7174/api/Passengers/"
+   passengersController: "https://localhost:7174/api/Passengers/",
+   bookingsController: "https://localhost:7174/api/Bookings/"
 }
 
 // Get list of all flight data
@@ -223,13 +224,71 @@ const addPassenger = async function(passenger : Passenger) : Promise<boolean>
          name: passenger.name,
          job: passenger.job,
          email: passenger.email,
-         age: passenger.age,
-         flightID: passenger.flightID
+         age: passenger.age
       })
    });
 
    if (response.ok) return true;
    else console.error(`ERROR: Could not submit passenger addition, response status is ${response.status}!`);
+   return false;
+}
+
+// Get flights related to a passenger via their bookings
+const getFlightsByPassengerBookings = async function(passengerID : number) : Promise<Flight[]>
+{
+   let data : Array<Flight>;
+   data = [];
+
+   await fetch(API.passengersController + "FlightsByBooking?passengerID=" + passengerID)
+   .then(reponse => reponse.json())
+   .then(content => data = content)
+   .catch(err =>
+   {
+      console.error(`ERROR: Unable to retrieve all passengers!\n${err}`);
+      data = [];
+   });
+
+   return data;
+}
+
+// Add a booking given a passenger ID and a flight ID
+const addBookingWithPassengerAndFlight = async function(passengerID : number, flightID : number) : Promise<boolean>
+{
+   // Attempt to submit the addition
+   const response = await fetch(API.bookingsController,
+      {
+         method: 'POST',
+         headers:
+         {
+            'Content-Type': 'application/json'
+         },
+         body: JSON.stringify(
+            {
+               'flightID': flightID,
+               'passengerID': passengerID
+            })
+      });
+   
+   if (response.ok) return true;
+   else console.error(`ERROR: Could not submit booking addition, response status is ${response.status}!`);
+   return false;
+}
+
+// Delete booking given a passenger ID and a flight ID
+const deleteBookingWithPassengerAndFlight = async function(passengerID : number, flightID : number) : Promise<boolean>
+{
+   // Attempt to submit the deletion
+   const response = await fetch(API.bookingsController + "FromPassengerAndFlight?passengerID=" + passengerID + "&flightID=" + flightID,
+      {
+         method: 'DELETE',
+         headers:
+         {
+            'Content-Type': 'application/json'
+         }
+      });
+   
+   if (response.ok) return true;
+   else console.error(`ERROR: Could not submit booking deletion, reponse status is ${response.status}!`);
    return false;
 }
 
@@ -245,7 +304,10 @@ const APIService =
    getPassengersWithParams,
    editPassenger,
    deletePassenger,
-   addPassenger
+   addPassenger,
+   getFlightsByPassengerBookings,
+   addBookingWithPassengerAndFlight,
+   deleteBookingWithPassengerAndFlight
 }
 
 export default APIService;

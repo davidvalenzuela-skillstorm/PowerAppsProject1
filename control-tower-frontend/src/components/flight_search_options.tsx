@@ -176,7 +176,7 @@ class FlightSearchOptions extends React.Component<any, FlightDataParams>
                   value={this.state.passengerLimit || ""}
                   onChange={(event) => this.setState({passengerLimit: parseInt(event.target.value)})}
                />
-               <Divider />
+               <br />
                <br />
                <Button variant="outlined" onClick={() => this.props.search(this.state)}>Search</Button>
             </AccordionDetails>

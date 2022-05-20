@@ -89,11 +89,16 @@ namespace Control_Tower.Controllers
 
         // GET: api/Flights/RelatedPassengers?id=[id]
         [HttpGet("RelatedPassengers")]
-        public async Task<ActionResult<IEnumerable<Passenger>>> GetRelatedPassengers(int id)
+        public async Task<ActionResult<IEnumerable<Passenger>>> GetRelatedPassengers([FromQuery] int id)
         {
-            var passengers = await _context.Passengers
-                .Where(p => p.FlightID == id)
-                .ToListAsync();
+            var passengers = new List<Passenger>();
+            var bookings = await _context.Bookings.ToArrayAsync();
+
+            foreach (var booking in bookings)
+            {
+                Passenger currentPassenger = _context.Passengers.Find(booking.PassengerID);
+                passengers.Add(currentPassenger);
+            }
 
             return passengers;
         }
