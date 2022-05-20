@@ -171,7 +171,7 @@ class PassengerAddMenu extends React.Component<PassengerAddMenuProps, PassengerA
                aria-describedby="addItemMenuBody"
             >
             <Box sx={PassengerAddMenuStyle}>
-               <Typography id="addItemMenuTitle" variant="h6" component="h2">
+               <Typography id="addItemMenuTitle" variant="h6" component="h2" color="primary">
                   Adding New Passenger
                </Typography>
                <Typography id="addItemMenuBody" component="div">

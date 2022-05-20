@@ -68,7 +68,7 @@ class PassengerBookings extends React.Component<PassengerBookingsProps, Passenge
                aria-describedby="menuBody"
             >
             <Box sx={PassengerBookingsMenuStyle}>
-               <Typography id="menuTitle" variant="h6" component="h2">
+               <Typography id="menuTitle" variant="h6" component="h2" color="primary">
                   Bookings for passenger {this.props.passenger.name} (with ID {this.props.passenger.id})
                </Typography>
                <Typography id="menuBody" component="div">
@@ -87,7 +87,7 @@ class PassengerBookings extends React.Component<PassengerBookingsProps, Passenge
                               <TableRow key={entry.id}>
                                  <TableCell>{entry.id}</TableCell>
                                  <TableCell align="left">
-                                    Departing from {new Date(entry.departureAirport).toLocaleString()} on {new Date(entry.departureDateTime).toLocaleString()} and arriving at {entry.arrivalAirport} on {entry.arrivalDateTime}.
+                                    Departing from {new Date(entry.departureAirport).toLocaleString()} on {new Date(entry.departureDateTime).toLocaleString()} and arriving at {entry.arrivalAirport} on {new Date(entry.arrivalDateTime).toLocaleString()}.
                                  </TableCell>
                                  <TableCell>
                                     <Button
@@ -102,7 +102,18 @@ class PassengerBookings extends React.Component<PassengerBookingsProps, Passenge
                      </Table>
                   </TableContainer>
                   {this.state.flightData.length <= 0 &&
-                  <h2 style={{textAlign: 'center'}}>No entries found</h2>}
+                  <>
+                     <br />
+                     <Typography
+                        id="menuTitle"
+                        variant="h6"
+                        component="h2"
+                        color="secondary"
+                        textAlign={'center'}
+                     >
+                        No entries found
+                     </Typography>
+                  </>}
                </Typography>
             </Box>
          </Modal>

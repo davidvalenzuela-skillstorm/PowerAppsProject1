@@ -75,7 +75,7 @@ class PassengerSearchOptions extends React.Component<any, PassengerDataParams>
                   value={this.state.flightID || ""}
                   onChange={(event) => this.setState({flightID: parseInt(event.target.value)})}
                />
-               <Divider />
+               <br />
                <br />
                <Button variant="outlined" onClick={() => this.props.search(this.state)}>Search</Button>
             </AccordionDetails>

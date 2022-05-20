@@ -72,7 +72,7 @@ class PassengerEditMenu extends React.Component<any, Passenger>
                aria-describedby="editItemMenuBody"
             >
             <Box sx={PassengerEditMenuStyle}>
-               <Typography id="editItemMenuTitle" variant="h6" component="h2">
+               <Typography id="editItemMenuTitle" variant="h6" component="h2" color="primary">
                   Editing Passenger {this.props.item.name} (with ID {this.props.item.ID})
                </Typography>
                <Typography id="editItemMenuBody" component="div">

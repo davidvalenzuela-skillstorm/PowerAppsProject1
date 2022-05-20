@@ -208,7 +208,7 @@ class FlightAddMenu extends React.Component<FlightAddMenuProps, FlightAddMenuSta
                aria-describedby="addItemMenuBody"
             >
             <Box sx={FlightAddMenuStyle}>
-               <Typography id="addItemMenuTitle" variant="h6" component="h2">
+               <Typography id="addItemMenuTitle" variant="h6" component="h2" color="primary">
                   Adding New Flight
                </Typography>
                <Typography id="addItemMenuBody" component="div">
