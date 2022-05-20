@@ -233,6 +233,24 @@ const addPassenger = async function(passenger : Passenger) : Promise<boolean>
    return false;
 }
 
+// Get flights related to a passenger via their bookings
+const getFlightsByPassengerBookings = async function(passengerID : number) : Promise<Flight[]>
+{
+   let data : Array<Flight>;
+   data = [];
+
+   await fetch(API.passengersController + "FlightsByBooking?passengerID=" + passengerID)
+   .then(reponse => reponse.json())
+   .then(content => data = content)
+   .catch(err =>
+   {
+      console.error(`ERROR: Unable to retrieve all passengers!\n${err}`);
+      data = [];
+   });
+
+   return data;
+}
+
 // All functions to export go here
 const APIService =
 {
@@ -245,7 +263,8 @@ const APIService =
    getPassengersWithParams,
    editPassenger,
    deletePassenger,
-   addPassenger
+   addPassenger,
+   getFlightsByPassengerBookings
 }
 
 export default APIService;

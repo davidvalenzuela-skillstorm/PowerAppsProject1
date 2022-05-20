@@ -24,7 +24,6 @@ class FlightDataTable extends React.Component<FlightDataTableProps>
                      <TableCell align="right">Departure Airport</TableCell>
                      <TableCell align="right">Arrival Airport</TableCell>
                      <TableCell align="right">Passenger Limit</TableCell>
-                     <TableCell>View passengers</TableCell>
                   </TableRow>
                </TableHead>
                <TableBody>
@@ -37,7 +36,6 @@ class FlightDataTable extends React.Component<FlightDataTableProps>
                         <TableCell align="right">{entry.departureAirport}</TableCell>
                         <TableCell align="right">{entry.arrivalAirport}</TableCell>
                         <TableCell align="right">{entry.passengerLimit}</TableCell>
-                        <TableCell><Button variant="outlined" size="small">&#9992;</Button></TableCell>
                      </TableRow>
                   ))}
                </TableBody>

@@ -154,18 +154,39 @@ namespace Control_Tower.Controllers
             // Check flight ID
             if (flightID != null && flightID >= 0)
             {
-                var bookings = await _context.Bookings
-                    .Where(b => b.FlightID == flightID)
-                    .ToArrayAsync();
-
-                foreach (var booking in bookings)
+                var bookings = _context.Bookings;
+                List<int> passengerIDs = new List<int>();
+                foreach (Booking booking in bookings)
                 {
-                    //query.Where(passenger => passenger.ID == booking.PassengerID);
-                    query.TakeWhile(passenger => passenger.ID == booking.PassengerID);
+                    passengerIDs.Add(booking.PassengerID);
                 }
+                query = query.Where(passenger => passengerIDs.Contains(passenger.ID));
             }
 
             return query.ToList();
+        }
+
+        // GET: api/Passengers/FlightsByBookings?passengerID=[passengerID]
+        [HttpGet("FlightsByBooking")]
+        public async Task<ActionResult<IEnumerable<Flight>>> GetFlightsByBookings([FromQuery] int? passengerID)
+        {
+            if (passengerID == null) return BadRequest();
+
+            var bookings = await _context.Bookings
+                .Where(booking => booking.PassengerID == passengerID)
+                .ToArrayAsync();
+
+            List<int> flightIDs = new List<int>();
+            foreach (Booking booking in bookings)
+            {
+                flightIDs.Add(booking.FlightID);
+            }
+
+            var flights = await _context.Flights
+                .Where(flight => flightIDs.Contains(flight.ID))
+                .ToListAsync();
+
+            return flights;
         }
 
         // PUT: api/Passengers/5
