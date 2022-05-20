@@ -103,6 +103,14 @@ namespace Control_Tower.Controllers
                 return NotFound();
             }
 
+            var relatedBookings = await _context.Bookings
+                .Where(b => b.FlightID == booking.FlightID)
+                .ToArrayAsync();
+            if (relatedBookings.Length >= flight.PassengerLimit)
+            {
+                return BadRequest();
+            }
+
             _context.Bookings.Add(booking);
             await _context.SaveChangesAsync();
 
