@@ -87,7 +87,7 @@ class PassengerBookings extends React.Component<PassengerBookingsProps, Passenge
                               <TableRow key={entry.id}>
                                  <TableCell>{entry.id}</TableCell>
                                  <TableCell align="left">
-                                    Departing from {new Date(entry.departureAirport).toLocaleString()} on {new Date(entry.departureDateTime).toLocaleString()} and arriving at {entry.arrivalAirport} on {new Date(entry.arrivalDateTime).toLocaleString()}.
+                                    Departing from {entry.departureAirport} on {new Date(entry.departureDateTime).toLocaleString()} and arriving at {entry.arrivalAirport} on {new Date(entry.arrivalDateTime).toLocaleString()}.
                                  </TableCell>
                                  <TableCell>
                                     <Button

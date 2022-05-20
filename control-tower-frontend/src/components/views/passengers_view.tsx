@@ -102,6 +102,7 @@ class PassengersView extends React.Component<any, PassengerViewState>
             <Button variant="outlined" onClick={() => this.setState({addMenuOpen: true})}>Add new passenger</Button>
             <PassengerAddMenu open={this.state.addMenuOpen} onClose={this.closeAddMenu} update={this.updatePassengerData} />
             <br />
+            <br />
             <PassengerSearchOptions search={this.updatePassengerData} />
             {dataJSX}
             <br />

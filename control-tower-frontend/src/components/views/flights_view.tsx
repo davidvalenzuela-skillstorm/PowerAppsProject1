@@ -107,6 +107,7 @@ class FlightsView extends React.Component<any, FlightsViewState>
             <Button variant="outlined" onClick={() => this.setState({addMenuOpen: true})}>Add new flight</Button>
             <FlightAddMenu open={this.state.addMenuOpen} onClose={this.closeAddMenu} update={this.updateFlightData} />
             <br />
+            <br />
             <FlightSearchOptions search={this.updateFlightData} />
             {dataJSX}
             <br />
