@@ -6,7 +6,8 @@ const API =
 {
    baseURL: "https://localhost:7174/api/",
    flightsController: "https://localhost:7174/api/Flights/",
-   passengersController: "https://localhost:7174/api/Passengers/"
+   passengersController: "https://localhost:7174/api/Passengers/",
+   bookingsController: "https://localhost:7174/api/Bookings/"
 }
 
 // Get list of all flight data
@@ -251,6 +252,24 @@ const getFlightsByPassengerBookings = async function(passengerID : number) : Pro
    return data;
 }
 
+// Delete booking given a passenger ID and a flight ID
+const deleteBookingFromPassengerAndFlight = async function(passengerID : number, flightID : number) : Promise<boolean>
+{
+   // Attempt to submit the deletion
+   const response = await fetch(API.bookingsController + "FromPassengerAndFlight?passengerID=" + passengerID + "&flightID=" + flightID,
+      {
+         method: 'DELETE',
+         headers:
+         {
+            'Content-Type': 'application/json'
+         }
+      });
+   
+      if (response.ok) return true;
+      else console.error(`ERROR: Could not submit booking deletion, reponse status is ${response.status}!`);
+      return false;
+}
+
 // All functions to export go here
 const APIService =
 {
@@ -264,7 +283,8 @@ const APIService =
    editPassenger,
    deletePassenger,
    addPassenger,
-   getFlightsByPassengerBookings
+   getFlightsByPassengerBookings,
+   deleteBookingFromPassengerAndFlight
 }
 
 export default APIService;

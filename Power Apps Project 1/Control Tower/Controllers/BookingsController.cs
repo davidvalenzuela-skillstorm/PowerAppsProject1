@@ -116,6 +116,30 @@ namespace Control_Tower.Controllers
             return NoContent();
         }
 
+        // DELETE: api/Bookings/FromPassengerAndFlight?passengerID=[passengerID]&&flightID=[flightID]
+        [HttpDelete("FromPassengerAndFlight")]
+        public async Task<IActionResult> DeleteBooking([FromQuery] int passengerID, [FromQuery] int flightID)
+        {
+            if (_context.Bookings == null)
+            {
+                return NotFound();
+            }
+
+            var bookings = await _context.Bookings
+                .Where(booking => booking.PassengerID == passengerID && booking.FlightID == flightID)
+                .ToListAsync();
+
+            if (bookings == null || bookings.Count() <= 0)
+            {
+                return NotFound();
+            }
+
+            _context.Bookings.RemoveRange(bookings);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
         private bool BookingExists(int id)
         {
             return (_context.Bookings?.Any(e => e.ID == id)).GetValueOrDefault();

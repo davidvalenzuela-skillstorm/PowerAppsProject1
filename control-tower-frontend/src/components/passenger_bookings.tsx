@@ -38,6 +38,7 @@ class PassengerBookings extends React.Component<PassengerBookingsProps, Passenge
          flightData: []
       };
       this.loadFilghtData = this.loadFilghtData.bind(this);
+      this.deleteFlightBooking = this.deleteFlightBooking.bind(this);
    }
 
    componentDidMount()
@@ -49,6 +50,12 @@ class PassengerBookings extends React.Component<PassengerBookingsProps, Passenge
    {
       APIService.getFlightsByPassengerBookings(this.props.passenger.id)
          .then(data => this.setState({flightData: data}));
+   }
+
+   deleteFlightBooking(flightID : number)
+   {
+      APIService.deleteBookingFromPassengerAndFlight(this.props.passenger.id, flightID)
+         .then(() => this.loadFilghtData());
    }
 
    render()
@@ -80,7 +87,13 @@ class PassengerBookings extends React.Component<PassengerBookingsProps, Passenge
                               <TableRow key={entry.id}>
                                  <TableCell>{entry.id}</TableCell>
                                  <TableCell align="left">Departing from {entry.departureAirport} on {entry.departureDateTime} and arriving at {entry.arrivalAirport} on {entry.arrivalDateTime}.</TableCell>
-                                 <TableCell><Button variant="outlined" size="small">&#10006;</Button></TableCell>
+                                 <TableCell>
+                                    <Button
+                                       variant="outlined"
+                                       size="small"
+                                       onClick={() => this.deleteFlightBooking(entry.id)}
+                                    >&#10006;</Button>
+                                 </TableCell>
                               </TableRow>
                            ))}
                         </TableBody>
