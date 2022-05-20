@@ -86,7 +86,9 @@ class PassengerBookings extends React.Component<PassengerBookingsProps, Passenge
                            {this.state.flightData.map((entry) => (
                               <TableRow key={entry.id}>
                                  <TableCell>{entry.id}</TableCell>
-                                 <TableCell align="left">Departing from {entry.departureAirport} on {entry.departureDateTime} and arriving at {entry.arrivalAirport} on {entry.arrivalDateTime}.</TableCell>
+                                 <TableCell align="left">
+                                    Departing from {new Date(entry.departureAirport).toLocaleString()} on {new Date(entry.departureDateTime).toLocaleString()} and arriving at {entry.arrivalAirport} on {entry.arrivalDateTime}.
+                                 </TableCell>
                                  <TableCell>
                                     <Button
                                        variant="outlined"
