@@ -26,8 +26,7 @@ class PassengerEditMenu extends React.Component<any, Passenger>
          name: this.props.item.name,
          job: this.props.item.job,
          email: this.props.item.email,
-         age: this.props.item.age,
-         flightID: this.props.item.flightID
+         age: this.props.item.age
       }
       this.submitPassengerEdit = this.submitPassengerEdit.bind(this);
       this.resetModifiedPassengerData = this.resetModifiedPassengerData.bind(this);
@@ -53,8 +52,7 @@ class PassengerEditMenu extends React.Component<any, Passenger>
          name: this.props.item.name,
          job: this.props.item.job,
          email: this.props.item.email,
-         age: this.props.item.age,
-         flightID: this.props.item.flightID
+         age: this.props.item.age
       });
    }
 
@@ -119,18 +117,6 @@ class PassengerEditMenu extends React.Component<any, Passenger>
                      size="small"
                      value={this.state.age || ""}
                      onChange={(event) => this.setState({age: parseInt(event.target.value)})}
-                  />
-                  <br />
-                  <br />
-                  <Divider />
-                  <br />
-                  <TextField
-                     label="Booking Number"
-                     variant="outlined"
-                     type="number"
-                     size="small"
-                     value={this.state.flightID || ""}
-                     onChange={(event) => this.setState({flightID: parseInt(event.target.value)})}
                   />
                   <br />
                   <br />

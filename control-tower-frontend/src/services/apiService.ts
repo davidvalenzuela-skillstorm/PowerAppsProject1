@@ -224,8 +224,7 @@ const addPassenger = async function(passenger : Passenger) : Promise<boolean>
          name: passenger.name,
          job: passenger.job,
          email: passenger.email,
-         age: passenger.age,
-         flightID: passenger.flightID
+         age: passenger.age
       })
    });
 

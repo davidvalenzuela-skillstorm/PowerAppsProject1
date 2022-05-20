@@ -31,9 +31,7 @@ interface PassengerAddMenuState extends Passenger
    emailError            : string,
    emailHasError         : boolean,
    ageError              : string,
-   ageHasError           : boolean,
-   flightIDError    : string,
-   flightIDHasError : boolean
+   ageHasError           : boolean
 }
 
 class PassengerAddMenu extends React.Component<PassengerAddMenuProps, PassengerAddMenuState>
@@ -48,7 +46,6 @@ class PassengerAddMenu extends React.Component<PassengerAddMenuProps, PassengerA
          job: "",
          email: "",
          age: 0,
-         flightID: 0,
          nameError: "",
          nameHasError: false,
          jobError: "",
@@ -56,9 +53,7 @@ class PassengerAddMenu extends React.Component<PassengerAddMenuProps, PassengerA
          emailError: "",
          emailHasError: false,
          ageError: "",
-         ageHasError: false,
-         flightIDError: "",
-         flightIDHasError: false
+         ageHasError: false
       }
       this.submitPassengerAddition = this.submitPassengerAddition.bind(this);
       this.validation = this.validation.bind(this);
@@ -148,34 +143,6 @@ class PassengerAddMenu extends React.Component<PassengerAddMenuProps, PassengerA
          dataLooksGood = false;
       }
 
-      // Check that the booking number is not empty
-      if (this.state.flightID)
-      {
-         // Check that the booking number is not NaN
-         if (isNaN(this.state.flightID))
-         {
-            errorStates.bnError = "The value for this field is invalid";
-            errorStates.bnHasError = true;
-            dataLooksGood = false;
-         }
-         else
-         {
-            // Check that the booking number is not less than 0
-            if (this.state.flightID < 0)
-            {
-               errorStates.bnError = "This value should not be less than 1";
-               errorStates.bnHasError = true;
-               dataLooksGood = false;
-            }
-         }
-      }
-      else // Booking number is empty
-      {
-         errorStates.bnError = "This field should not be empty";
-         errorStates.bnHasError = true;
-         dataLooksGood = false;
-      }
-
       // Update error states on form components
       this.setState(
       {
@@ -186,9 +153,7 @@ class PassengerAddMenu extends React.Component<PassengerAddMenuProps, PassengerA
          emailError: errorStates.eError,
          emailHasError: errorStates.eHasError,
          ageError: errorStates.aError,
-         ageHasError: errorStates.aHasError,
-         flightIDError: errorStates.bnError,
-         flightIDHasError: errorStates.bnHasError
+         ageHasError: errorStates.aHasError
       });
 
       // Return whether we found the data is good
@@ -259,20 +224,6 @@ class PassengerAddMenu extends React.Component<PassengerAddMenuProps, PassengerA
                      onChange={(event) => this.setState({age: parseInt(event.target.value)})}
                      error={this.state.ageHasError}
                      helperText={this.state.ageError}
-                  />
-                  <br />
-                  <br />
-                  <Divider />
-                  <br />
-                  <TextField
-                     label="Booking Number"
-                     variant="outlined"
-                     type="number"
-                     size="small"
-                     value={this.state.flightID || ""}
-                     onChange={(event) => this.setState({flightID: parseInt(event.target.value)})}
-                     error={this.state.flightIDHasError}
-                     helperText={this.state.flightIDError}
                   />
                   <br />
                   <br />
