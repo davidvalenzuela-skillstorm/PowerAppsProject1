@@ -96,12 +96,21 @@ namespace Control_Tower.Controllers
 
         // Get: api/Passengers/BookingNumber/[bookingNumber]
         [HttpGet("BookingNumber/{bookingNumber}")]
-        public async Task<ActionResult<IEnumerable<Passenger>>> GetPassengersByBookingNumber(int bookingNumber)
+        public async Task<ActionResult<IEnumerable<Passenger>>> GetPassengersByBookingNumber(int? flightID)
         {
-            var passengers = await _context.Passengers
-                .Where(p =>
-                    bookingNumber == -1 ? p.FlightID == null || p.FlightID == 0 : p.FlightID == bookingNumber)
-                .ToListAsync();
+            if (flightID == null || flightID < 0)
+            {
+                return NotFound();
+            }
+
+            var passengers = new List<Passenger>();
+            var bookings = await _context.Bookings.ToArrayAsync();
+
+            foreach (var booking in bookings)
+            {
+                Passenger currentPassenger = _context.Passengers.Find(booking.PassengerID);
+                passengers.Add(currentPassenger);
+            }
 
             return passengers;
         }
@@ -145,7 +154,15 @@ namespace Control_Tower.Controllers
             // Check flight ID
             if (flightID != null && flightID >= 0)
             {
-                query = query.Where(passenger => passenger.FlightID == flightID);
+                var bookings = await _context.Bookings
+                    .Where(b => b.FlightID == flightID)
+                    .ToArrayAsync();
+
+                foreach (var booking in bookings)
+                {
+                    //query.Where(passenger => passenger.ID == booking.PassengerID);
+                    query.TakeWhile(passenger => passenger.ID == booking.PassengerID);
+                }
             }
 
             return query.ToList();

@@ -1,4 +1,6 @@
-﻿namespace Control_Tower.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Control_Tower.Models
 {
     public class Flight
     {
