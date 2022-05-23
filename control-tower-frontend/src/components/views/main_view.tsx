@@ -1,6 +1,7 @@
 import React from 'react';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
+import { Typography } from '@mui/material';
 
 class MainView extends React.Component<any, any>
 {
@@ -8,7 +9,8 @@ class MainView extends React.Component<any, any>
    {
       return (
          <div className="main_view">
-            <h1>Welcome back to Control Tower!</h1>
+            <br />
+            <Typography component="h1" variant="h4" color="secondary">Welcome back to Control Tower!</Typography>
             <br />
             <Stack spacing={2}>
                <Button variant="contained" onClick={() => this.props.changeView(1)}>Manage Flights</Button>
