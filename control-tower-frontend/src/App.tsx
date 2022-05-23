@@ -1,6 +1,5 @@
-import { Paper } from '@mui/material';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import React from 'react';
+import { ThemeProvider, createTheme, useTheme } from '@mui/material/styles';
+import React, { useEffect } from 'react';
 import './App.css';
 import FlightsView from './components/views/flights_view';
 import MainView from './components/views/main_view';
@@ -13,6 +12,19 @@ const darkTheme = createTheme(
     mode: 'dark'
   }
 });
+
+// This function component is a cheaty way of setting the background color using hooks
+const ThemeSetup = () =>
+{
+  const theme = useTheme();
+
+  useEffect(() =>
+  {
+    document.body.style.backgroundColor = theme.palette.background.default;
+  });
+
+  return <></>;
+}
 
 enum Views
 {
@@ -63,11 +75,10 @@ class App extends React.Component<any, AppState>
 
     return (
       <ThemeProvider theme={darkTheme}>
-        <Paper elevation={0} style={{width: '100%', height: '100%', paddingTop: '25px'}}>
-          <div className="App">
-            {view}
-          </div>
-        </Paper>
+        <div className="App">
+          <ThemeSetup />
+          {view}
+        </div>
       </ThemeProvider>
     );
   }

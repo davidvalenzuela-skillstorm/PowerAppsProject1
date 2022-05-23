@@ -1,4 +1,4 @@
-import { Button, Skeleton } from '@mui/material';
+import { Button, Skeleton, Typography } from '@mui/material';
 import React from 'react';
 import APIService from '../../services/apiService';
 import { Passenger, PassengerDataParams } from '../../view-models/passenger';
@@ -95,7 +95,8 @@ class PassengersView extends React.Component<any, PassengerViewState>
 
       return (
          <div className='passengers_view'>
-            <h1>Managing Passengers</h1>
+            <br />
+            <Typography component="h1" variant="h4" color="secondary">Managing Passengers</Typography>
             <br />
             <Button variant="contained" onClick={() => this.props.changeView(0)}>Go back</Button>
             &nbsp;&nbsp;&nbsp;&nbsp;

@@ -17,6 +17,8 @@ const PassengerEditMenuStyle = {
 
 class PassengerEditMenu extends React.Component<any, Passenger>
 {
+   // For whatever reason, "this.state.id" yields "undefined" after a moment inside the modal's title <Typography>, so I need to make this text a variable that pulls the variable only once and never changes
+   menuTitle = "";
    constructor(props : any)
    {
       super(props);
@@ -31,6 +33,7 @@ class PassengerEditMenu extends React.Component<any, Passenger>
       this.submitPassengerEdit = this.submitPassengerEdit.bind(this);
       this.resetModifiedPassengerData = this.resetModifiedPassengerData.bind(this);
       this.closeMenu = this.closeMenu.bind(this);
+      this.menuTitle = `Editing Passenger ${this.props.item.name} (with ID ${this.state.id})`;
    }
 
    submitPassengerEdit()
@@ -73,7 +76,7 @@ class PassengerEditMenu extends React.Component<any, Passenger>
             >
             <Box sx={PassengerEditMenuStyle}>
                <Typography id="editItemMenuTitle" variant="h6" component="h2" color="primary">
-                  Editing Passenger {this.props.item.name} (with ID {this.props.item.ID})
+                  {this.menuTitle}
                </Typography>
                <Typography id="editItemMenuBody" component="div">
                   <br />
